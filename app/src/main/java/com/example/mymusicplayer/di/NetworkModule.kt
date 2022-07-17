@@ -27,7 +27,7 @@ object NetworkModule {
 
     @Provides
     @BaseUrl
-    fun provideBaseUrl(): HttpUrl = BuildConfig.API_URL.toHttpUrl()
+    fun provideBaseUrl(): HttpUrl = BuildConfig.API_URL.toHttpUrl() //Breaks the ci build
 
     @Provides
     @Singleton
