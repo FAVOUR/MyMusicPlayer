@@ -1,6 +1,5 @@
 package com.example.mymusicplayer.data.source.local.dao
 
-import android.icu.text.CaseMap
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
@@ -26,9 +25,8 @@ interface SongDao {
     fun getFavouriteSong(isFavourite: Boolean = true): Song
 
     @Transaction
-    fun updateFavouriteSong(favouriteSong: Song):Maybe<Long>{
+    fun updateFavouriteSong(favouriteSong: Song){
         return getFavouriteSong().run {
-            //try @Update and reduce the code to just 1 or make storesong param a list
             storeSong(this.copy(isFavourite = false))
             storeSong(favouriteSong)
         }

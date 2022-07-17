@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/musicPlayerFragment"
+        android:name="com.example.mymusicplayer.ui.fragment.MusicPlayerFragment"
+        android:label="fragment_song_detail"
+        tools:layout="@layout/fragment_music_player" />
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mymusicplayer.ui.fragment.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_music_player_Fragment"
+            app:destination="@id/musicPlayerFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@animator/nav_default_exit_anim"
+        app:popUpTo="@id/nav_main"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+</navigation>

@@ -6,8 +6,10 @@ import com.example.mymusicplayer.data.source.local.entity.Song
 import com.example.mymusicplayer.data.source.remote.RemoteSongsDataSource
 import com.example.mymusicplayer.data.source.remote.model.LearnFieldSongs
 import com.example.mymusicplayer.data.source.remote.model.toSong
+import com.example.mymusicplayer.ui.util.createResult
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Observer
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
@@ -16,32 +18,34 @@ class SongRepositoryImpl @Inject constructor(
     private val localSongDataSource: LocalSongDataSourceImpl,
 ) : SongRepository {
 
-    override fun obtainSongs() { //: Observable<Result<Song>>
-         remoteSongsDataSource.getSongs() //change to single and use flatmap
-            .doOnNext{ learnFieldSong ->
+    override fun obtainSongs(): Observable<Result<List<Song>>> {
+        return remoteSongsDataSource.getSongs()
+            .flatMap{ learnFieldSong ->
                 if (learnFieldSong.songs != null) {
                     learnFieldSong.songs.map {
                         storeSongsCacheSongs(it.toSong())
                     }
                 }
+                Observable.just(learnFieldSong.songs!!.map { it.toSong() }
+                )
             }.createResult({
-                val hold:List<Song> = it.songs!!.map {it.toSong()}
+                val hold:List<Song> = it
                 Result.Success(data = hold)
-            } ,{ Result.Error(java.lang.Exception("")) } )
-//            .createResult({ Result.Success(it.songs.) }){ Result.Error(it) }
+            } ,{ Result.Error(IllegalArgumentException("")) } )
 
     }
 
-    override fun downloadSpecificSong(songUrl: String, specificSong: Song): Observable<Result<String>> {
-        return remoteSongsDataSource.downloadAudio(songUrl) //change to single and use flatmap
+    override fun downloadSpecificSong(specificSong: Song): Observable<Result<Song>> {
+        return remoteSongsDataSource.downloadAudio(specificSong.audioUrl) //change to single and use flatmap
             //throw Exception or set the error
             .flatMap{
                 val stream = it.byteStream()
                val path =  localSongDataSource.saveAudioToDeviceAndStorePath(song = specificSong, stream)
+                val song = specificSong.copy(pathToAudio = path)
                 if (path.isNotEmpty()){
-                    storeSongsCacheSongs(specificSong.copy(pathToAudio = path))
+                    storeSongsCacheSongs(song)
                 }
-                Observable.just(path) //optimize this
+                Observable.just(song) //optimize this
             }.createResult({ Result.Success(it) }){ Result.Error(it) }
     }
 
@@ -53,42 +57,6 @@ class SongRepositoryImpl @Inject constructor(
         return localSongDataSource.obtainSongByTitle(titleOfSong = songTitle)
             .toObservable()
             .createResult({ Result.Success(it) }){ Result.Error(it) }
-    }
-
-    //move to helper class
-
-    fun <T : Any> Observable<T>.createResult(
-        success: (T) -> Result<T>,
-        failure: (Exception) -> Result<T>,
-    ): Observable<Result<T>> {
-        return try {
-            map {
-                if (it != null) {
-                    success(it)
-                } else {
-                    failure(IllegalArgumentException("Response Is empty"))//Do not hardcode
-                }
-            }
-        } catch (e: Throwable) {
-            Observable.just(Result.Error(java.lang.Exception("An Error Occurred")))//Do not hardcode
-        }
-    }
-
-    fun <T : Any> Maybe<T>.createResult(
-        success: (T) -> Result<T>,
-        failure: (Exception) -> Result<T>,
-    ): Maybe<Result<T>> {
-        return try {
-            map {
-                if (it != null) {
-                    success(it)
-                } else {
-                    failure(IllegalArgumentException("Response Is empty")) //Do not hardcode
-                }
-            }
-        } catch (e: Throwable) {
-            Maybe.just(Result.Error(java.lang.Exception("An Error Occurred")))//Do not hardcode
-        }
     }
 
 }

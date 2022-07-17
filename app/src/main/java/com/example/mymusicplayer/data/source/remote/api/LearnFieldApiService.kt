@@ -11,7 +11,7 @@ import java.io.InputStream
 
 
 interface LearnFieldApiService {
-    @GET("/data/manifest.json")
+    @GET("/Learnfield-GmbH/CodingChallenge/master/react%20native/simple%20audio%20player/data/manifest.json")
     fun fetchSongs(): Single<Response<LearnFieldSongs>>
 
     @Streaming

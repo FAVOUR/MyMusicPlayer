@@ -7,8 +7,8 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 
 interface SongRepository {
-    fun obtainSongs(): Observable<Result<Song>>
-    fun downloadSpecificSong(songUrl: String, specificSong: Song): Observable<Result<String>>
+    fun obtainSongs(): Observable<Result<List<Song>>>
+    fun downloadSpecificSong(specificSong: Song): Observable<Result<Song>>
     fun storeSongsCacheSongs(song: Song): Maybe<Result<Long>>
     fun observeSpecificSong(songTitle: String): Observable <Result<Song>>
 }

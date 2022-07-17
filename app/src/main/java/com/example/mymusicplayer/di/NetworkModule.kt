@@ -13,6 +13,7 @@ import okhttp3.Cache
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -40,12 +41,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(cache: Cache): OkHttpClient {
+    fun provideOkHttpClient(cache: Cache,httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .cache(cache)
             .connectTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+            .addInterceptor(httpLoggingInterceptor)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun okhttpLogger(): HttpLoggingInterceptor {
+
+        val interceptor = HttpLoggingInterceptor()
+
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        return interceptor
     }
 
     @Provides

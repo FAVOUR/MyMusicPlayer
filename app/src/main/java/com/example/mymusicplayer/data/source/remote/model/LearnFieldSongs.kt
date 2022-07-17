@@ -21,7 +21,8 @@ fun LearnFieldSongsItems.toSong(): Song {
         Song(
             title = title,
             coverUrl = cover,
-            totalDurationMs = totalDurationMs,
+            totalDurationMs =
+            totalDurationMs.toLong(),
             audioUrl = audio,
             isFavourite = false,
             pathToAudio = "",

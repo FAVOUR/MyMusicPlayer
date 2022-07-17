@@ -18,5 +18,5 @@ interface LocalSongDataSource {
     fun getFilePath(fileName: String, folderName: String): String
     fun storeSongInDb(songToStore: Song): Maybe<Long>
     fun obtainSongByTitle(titleOfSong: String): Single<Song>
-    fun setAsFavourite(song: Song): Maybe<Long>
+    fun setAsFavourite(song: Song)
 }
