@@ -46,7 +46,7 @@ class LocalSongDataSourceImpl @Inject constructor(
             }
             return filePath
         } catch (e: Exception) {
-            Log.e("saveFile", e.toString())
+            e.printStackTrace()
         } finally {
             input?.close()
         }
@@ -69,14 +69,10 @@ class LocalSongDataSourceImpl @Inject constructor(
             path
         } else {
             val extStorageDirectory = Environment.getExternalStorageDirectory().toString()
-            Log.e("Here extStorageDirectory", extStorageDirectory)
-
-            val folder = File(extStorageDirectory, "MyFolder")
-            val madefile = folder.mkdirs()
-            Log.e("Here madefile", "$madefile")
-
-//           file.mkdirs()
-            path
+            File(extStorageDirectory, "MyFolder").let {
+                file.mkdirs()
+                file.path
+            }
         }
     }
 
