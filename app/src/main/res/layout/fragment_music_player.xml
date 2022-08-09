@@ -49,8 +49,7 @@
         android:layout_height="50dp"
         android:src="@drawable/heart_line_black"
         app:layout_constraintBottom_toTopOf="@id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <SeekBar
         android:id="@+id/seek_bar"

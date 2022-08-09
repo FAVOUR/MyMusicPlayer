@@ -7,7 +7,6 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Streaming
 import retrofit2.http.Url
-import java.io.InputStream
 
 
 interface LearnFieldApiService {
@@ -16,5 +15,5 @@ interface LearnFieldApiService {
 
     @Streaming
     @GET
-    fun downloadMp3(@Url url:String): Single<Response<ResponseBody>>
+    fun downloadMp3(@Url url: String): Single<Response<ResponseBody>>
 }

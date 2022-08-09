@@ -13,19 +13,26 @@ import java.io.InputStream
 import javax.inject.Inject
 
 
-class LocalSongDataSourceImpl @Inject constructor(private val songDao: SongDao,private val applicationContext: Context) :
+class LocalSongDataSourceImpl @Inject constructor(
+    private val songDao: SongDao,
+    private val applicationContext: Context,
+) :
     LocalSongDataSource {
 
 
-    override fun fetchSongs(): Single<Song>{
+    override fun fetchSongs(): Single<Song> {
         return songDao.fetchAllSong()
     }
 
     override fun saveAudioToDeviceAndStorePath(song: Song, inputStream: InputStream) =
-        storeSongInPhone(input = inputStream, fileName = fileName(song.audioUrl) )
+        storeSongInPhone(input = inputStream, fileName = fileName(song.audioUrl))
 
 
-    override fun storeSongInPhone(input: InputStream, fileName:String, folderName:String):String{
+    override fun storeSongInPhone(
+        input: InputStream,
+        fileName: String,
+        folderName: String,
+    ): String {
         try {
             val filePath = getFilePath(fileName, folderName)
             val fos = FileOutputStream(filePath)
@@ -38,46 +45,44 @@ class LocalSongDataSourceImpl @Inject constructor(private val songDao: SongDao,p
                 output.flush()
             }
             return filePath
-        }catch (e:Exception){
-            Log.e("saveFile",e.toString())
-        }
-        finally {
+        } catch (e: Exception) {
+            Log.e("saveFile", e.toString())
+        } finally {
             input?.close()
         }
         return ""
     }
 
     override fun fileName(url: String) =
-        url.substring("url".lastIndexOf("/")+1)
+        url.substring("url".lastIndexOf("/") + 1)
 
 
-    override fun getFilePath(fileName: String, folderName: String):String {
+    override fun getFilePath(fileName: String, folderName: String): String {
         var filePath = applicationContext.filesDir.absolutePath + folderName + fileName
-        return  createOrReturnFilePath(folderName)
+        return createOrReturnFilePath(folderName)
 
     }
 
-    private fun createOrReturnFilePath(path: String):String {
+    private fun createOrReturnFilePath(path: String): String {
         val file = File(path)
-       return if (file.exists()) {
-           path
+        return if (file.exists()) {
+            path
         } else {
-            Log.e("Here","  ")
-           val extStorageDirectory = Environment.getExternalStorageDirectory().toString()
-           Log.e("Here extStorageDirectory",extStorageDirectory)
+            val extStorageDirectory = Environment.getExternalStorageDirectory().toString()
+            Log.e("Here extStorageDirectory", extStorageDirectory)
 
-           val folder = File(extStorageDirectory, "MyFolder")
-           val madefile =folder.mkdirs()
-           Log.e("Here madefile","$madefile")
+            val folder = File(extStorageDirectory, "MyFolder")
+            val madefile = folder.mkdirs()
+            Log.e("Here madefile", "$madefile")
 
 //           file.mkdirs()
-           path
+            path
         }
     }
 
 
-    override fun storeSongInDb(songToStore: Song): Maybe<Long>{
-       return songDao.storeSong(song = songToStore)
+    override fun storeSongInDb(songToStore: Song): Maybe<Long> {
+        return songDao.storeSong(song = songToStore)
     }
 
     override fun obtainSongByTitle(titleOfSong: String): Single<Song> {

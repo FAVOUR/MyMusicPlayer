@@ -25,7 +25,7 @@ interface SongDao {
     fun getFavouriteSong(isFavourite: Boolean = true): Song
 
     @Transaction
-    fun updateFavouriteSong(favouriteSong: Song){
+    fun updateFavouriteSong(favouriteSong: Song) {
         return getFavouriteSong().run {
             storeSong(this.copy(isFavourite = false))
             storeSong(favouriteSong)

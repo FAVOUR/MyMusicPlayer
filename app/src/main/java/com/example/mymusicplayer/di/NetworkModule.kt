@@ -3,12 +3,12 @@ package com.example.mymusicplayer.di
 import android.content.Context
 import com.example.mymusicplayer.BuildConfig
 import com.example.mymusicplayer.data.source.remote.api.LearnFieldApiService
+import com.example.mymusicplayer.di.annotation.BaseUrl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import com.example.mymusicplayer.di.annotation.BaseUrl
 import okhttp3.Cache
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -41,7 +41,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(cache: Cache,httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideOkHttpClient(
+        cache: Cache,
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+    ): OkHttpClient {
         return OkHttpClient.Builder()
             .cache(cache)
             .connectTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)

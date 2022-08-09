@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 data class LearnFieldSongs(
     @SerializedName("data")
-    val songs: List<LearnFieldSongsItems>?
+    val songs: List<LearnFieldSongsItems>?,
 )
 
 data class LearnFieldSongsItems(
     val audio: String,
     val cover: String,
     val title: String,
-    val totalDurationMs: Int
+    val totalDurationMs: Int,
 )
 
 
 fun LearnFieldSongsItems.toSong(): Song {
-    return run{
+    return run {
         Song(
             title = title,
             coverUrl = cover,

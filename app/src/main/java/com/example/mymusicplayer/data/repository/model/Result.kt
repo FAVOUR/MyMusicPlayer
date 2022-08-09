@@ -1,8 +1,8 @@
 package com.example.mymusicplayer.data.repository.model
 
 sealed class Result<out T : Any> {
-    data class Success<out T : Any>(val data: T): Result<T>()
-    data class Error(val error: Exception): Result<Nothing>()
+    data class Success<out T : Any>(val data: T) : Result<T>()
+    data class Error(val error: Exception) : Result<Nothing>()
 }
 
 //inline fun <T, R : Any> T.runCatching(block: T.() -> R): Result<R> {

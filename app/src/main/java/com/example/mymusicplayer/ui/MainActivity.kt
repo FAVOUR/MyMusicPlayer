@@ -3,7 +3,6 @@ package com.example.mymusicplayer.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -33,14 +32,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun requestPermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
-                Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(this@MainActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(
+                this@MainActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
         ) {
             Toast.makeText(this@MainActivity,
                 "READ AND WRITE PERMISSIONS Are REQUIRED,PLEASE ALLOW FROM SETTINGS",
                 Toast.LENGTH_SHORT).show()
         } else ActivityCompat.requestPermissions(this@MainActivity,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE),
             123)
     }
 }

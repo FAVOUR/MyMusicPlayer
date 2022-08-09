@@ -10,7 +10,6 @@ import com.example.mymusicplayer.ui.MusicPlayerUiState
 import com.example.mymusicplayer.ui.util.standard
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.disposables.CompositeDisposable
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -45,7 +44,7 @@ class HomeViewModel @Inject constructor(private val songRepository: SongReposito
 
     fun fetchAudio(song: Song?) {
         mMusicPlayerObs.postValue(MusicPlayerUiState.Loading)
-        song?.let {nonemptySong ->
+        song?.let { nonemptySong ->
             compositeDisposable.add(
                 songRepository.downloadSpecificSong(specificSong = nonemptySong)
                     .standard()
@@ -60,7 +59,7 @@ class HomeViewModel @Inject constructor(private val songRepository: SongReposito
                         }
                     }
             )
-        }?:songsObs.postValue(HomeUiState.Error(IllegalArgumentException("No Song Was Passed")))
+        } ?: songsObs.postValue(HomeUiState.Error(IllegalArgumentException("No Song Was Passed")))
     }
 
 

@@ -7,11 +7,9 @@ import com.example.mymusicplayer.data.source.remote.RemoteSongsDataSource
 import com.example.mymusicplayer.data.source.remote.RemoteSongsDataSourceImpl
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 @Suppress("unused")
 @Module

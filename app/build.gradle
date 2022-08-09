@@ -22,7 +22,7 @@ android {
     }
 
     buildTypes {
-        debug{
+        debug {
             buildConfigField "String", "API_URL", "\"https://raw.githubusercontent.com/\""
         }
         release {
@@ -31,7 +31,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding = true
     }
     compileOptions {

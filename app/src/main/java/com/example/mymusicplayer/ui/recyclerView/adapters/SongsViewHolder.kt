@@ -10,19 +10,25 @@ import com.example.mymusicplayer.data.source.local.entity.Song
 import com.example.mymusicplayer.databinding.AllSongsItemLayoutBinding
 import com.example.mymusicplayer.ui.HomeRecyclerViewUiState
 
-class SongsViewHolder(private val binding: AllSongsItemLayoutBinding, private val onClick: (HomeRecyclerViewUiState) ->Unit) : RecyclerView.ViewHolder(binding.root) {
+class SongsViewHolder(
+    private val binding: AllSongsItemLayoutBinding,
+    private val onClick: (HomeRecyclerViewUiState) -> Unit,
+) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(position: Int,specificSong: Song){
-        with(specificSong){
+    fun bind(position: Int, specificSong: Song) {
+        with(specificSong) {
             //make this resusble
-            binding.favouriteImgV.setImageDrawable(getFavouriteImageState(isFavourite).getDrawable(binding.root.context))
+            binding.favouriteImgV.setImageDrawable(getFavouriteImageState(isFavourite).getDrawable(
+                binding.root.context))
             binding.songTitleTv.text = title
 //          binding.songCoverImgV.setImageDrawable() //use glide
             binding.ratingRatB.rating = rating.toFloat()
             binding.favouriteImgV.setOnClickListener {
                 //optimize
-                binding.favouriteImgV.setImageDrawable(getFavouriteImageState(!isFavourite).getDrawable(binding.root.context))
-                onClick(HomeRecyclerViewUiState.Favourite(isFavourite = !isFavourite, songTitle = title) )
+                binding.favouriteImgV.setImageDrawable(getFavouriteImageState(!isFavourite).getDrawable(
+                    binding.root.context))
+                onClick(HomeRecyclerViewUiState.Favourite(isFavourite = !isFavourite,
+                    songTitle = title))
             }
             binding.root.setOnClickListener {
                 onClick(HomeRecyclerViewUiState.NavigateToNextPage(song = specificSong))
@@ -35,9 +41,9 @@ class SongsViewHolder(private val binding: AllSongsItemLayoutBinding, private va
     }
 
     private fun Int.getDrawable(context: Context) =
-        ContextCompat.getDrawable(context,this)
+        ContextCompat.getDrawable(context, this)
 
-    private fun getFavouriteImageState(isFavourite:Boolean):Int {
+    private fun getFavouriteImageState(isFavourite: Boolean): Int {
         return if (isFavourite)
             R.drawable.heart_filled_black
         else

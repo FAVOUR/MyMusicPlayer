@@ -8,17 +8,18 @@ import com.example.mymusicplayer.data.source.local.entity.Song
 import com.example.mymusicplayer.databinding.AllSongsItemLayoutBinding
 import com.example.mymusicplayer.ui.HomeRecyclerViewUiState
 
-class SongsRecyclerViewAdapter(private val onClick: (HomeRecyclerViewUiState) ->Unit): ListAdapter<Song,SongsViewHolder>(SongDiffCallback()) {
+class SongsRecyclerViewAdapter(private val onClick: (HomeRecyclerViewUiState) -> Unit) :
+    ListAdapter<Song, SongsViewHolder>(SongDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongsViewHolder {
-         val binding = AllSongsItemLayoutBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = AllSongsItemLayoutBinding.inflate(LayoutInflater.from(parent.context))
 
-        return SongsViewHolder(binding,onClick)
+        return SongsViewHolder(binding, onClick)
 
     }
 
     override fun onBindViewHolder(holder: SongsViewHolder, position: Int) {
-        holder.bind(position,getItem(position))
+        holder.bind(position, getItem(position))
     }
 
 
@@ -31,7 +32,6 @@ class SongsRecyclerViewAdapter(private val onClick: (HomeRecyclerViewUiState) ->
             return oldItem == newItem
         }
     }
-
 
 
 }

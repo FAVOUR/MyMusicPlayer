@@ -7,11 +7,10 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.lang.IllegalArgumentException
 
 fun <T> Observable<T>.standard(
     liveObj: MutableLiveData<HomeUiState>? = null, //make it more Scalable
-    failedDataState: HomeUiState? = null  //make it more scalable
+    failedDataState: HomeUiState? = null,  //make it more scalable
 ): Observable<T> {
 
     return this
@@ -27,7 +26,6 @@ fun <T> Observable<T>.standard(
 
 
 }
-
 
 
 fun <T : Any> Observable<T>.createResult(

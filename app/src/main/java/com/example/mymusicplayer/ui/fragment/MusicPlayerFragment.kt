@@ -33,7 +33,7 @@ class MusicPlayerFragment : Fragment() {
     private lateinit var fragmentMusicPlayerBinding: FragmentMusicPlayerBinding
     private val homeViewModel by activityViewModels<HomeViewModel>()
     private var song: Song? = null
-    var mediaPlayer: MediaPlayer =MediaPlayer()
+    var mediaPlayer: MediaPlayer = MediaPlayer()
 
 //    private val songDetailViewModel by viewModels<SongDetailViewModel>()
 
@@ -47,14 +47,14 @@ class MusicPlayerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        fragmentMusicPlayerBinding = FragmentMusicPlayerBinding.inflate(inflater,container,false)
+        fragmentMusicPlayerBinding = FragmentMusicPlayerBinding.inflate(inflater, container, false)
         return fragmentMusicPlayerBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.observe(homeViewModel.musicPlayerObs,::observeSongState)
+        viewLifecycleOwner.observe(homeViewModel.musicPlayerObs, ::observeSongState)
         song?.let {
             setupView(it)
         }
@@ -65,13 +65,15 @@ class MusicPlayerFragment : Fragment() {
             override fun run() {
                 if (mediaPlayer != null) {
                     fragmentMusicPlayerBinding.seekBar.setProgress(mediaPlayer.getCurrentPosition())
-                    fragmentMusicPlayerBinding.currentTimeTv.text =  mediaPlayer.getCurrentPosition().toLong().convertToMMSS()
+                    fragmentMusicPlayerBinding.currentTimeTv.text =
+                        mediaPlayer.getCurrentPosition().toLong().convertToMMSS()
                 }
                 Handler().postDelayed(this, 100)
             }
         })
 
-        fragmentMusicPlayerBinding.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+        fragmentMusicPlayerBinding.seekBar.setOnSeekBarChangeListener(object :
+            OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 if (mediaPlayer != null && fromUser) {
                     mediaPlayer.seekTo(progress)
@@ -85,49 +87,53 @@ class MusicPlayerFragment : Fragment() {
 
     }
 
-    private fun setupView (it: Song) {
+    private fun setupView(it: Song) {
         fragmentMusicPlayerBinding.apply {
             songTitleTv.text = it.title
             Glide.with(fragmentMusicPlayerBinding.root.context)
                 .load(Uri.parse(it.coverUrl))
                 .into(fragmentMusicPlayerBinding.pausePlayImgBtn)
 
-            totalTimeTv.text =it.totalDurationMs.convertToMMSS()
-            fragmentMusicPlayerBinding.pausePlayImgBtn.setOnClickListener(View.OnClickListener { v: View? -> pausePlay(it.pathToAudio) })
+            totalTimeTv.text = it.totalDurationMs.convertToMMSS()
+            fragmentMusicPlayerBinding.pausePlayImgBtn.setOnClickListener(View.OnClickListener { v: View? ->
+                pausePlay(it.pathToAudio)
+            })
         }
     }
 
     private fun setupListeners() {
         fragmentMusicPlayerBinding.pausePlayImgBtn.setOnClickListener {
             song?.let {
-                if(it.pathToAudio.isNullOrEmpty())
-                homeViewModel.fetchAudio(song)
+                if (it.pathToAudio.isNullOrEmpty())
+                    homeViewModel.fetchAudio(song)
                 else
-                pausePlay(it.pathToAudio)
+                    pausePlay(it.pathToAudio)
             }
         }
     }
 
-    private fun observeSongState(songUiState: MusicPlayerUiState?){
+    private fun observeSongState(songUiState: MusicPlayerUiState?) {
         requireActivity().dismissProgress()
-        when(songUiState) {
+        when (songUiState) {
             is Success -> {
                 playMusic(songUiState.data.pathToAudio)
             }
-            is Loading ->{
-              requireActivity().showProgress(getString(R.string.fetching_songs),getString(R.string.please_wait))
+            is Loading -> {
+                requireActivity().showProgress(getString(R.string.fetching_songs),
+                    getString(R.string.please_wait))
             }
-            is Error ->{
-              requireActivity().onErrorMessage(title = getString(R.string.error), throwable = songUiState.exception)
+            is Error -> {
+                requireActivity().onErrorMessage(title = getString(R.string.error),
+                    throwable = songUiState.exception)
             }
-            else ->{
+            else -> {
 
             }
         }
     }
 
 
-    private fun playMusic(path:String) {
+    private fun playMusic(path: String) {
         mediaPlayer.reset()
         try {
 //            mediaPlayer.setDataSource(currentSong.getPath())
@@ -141,14 +147,14 @@ class MusicPlayerFragment : Fragment() {
         }
     }
 
-    private fun pausePlay(path:String) {
+    private fun pausePlay(path: String) {
         if (mediaPlayer.isPlaying) mediaPlayer.pause() else playOrContinue(path)
     }
 
-    private fun playOrContinue(path:String){
-        if(mediaPlayer.duration > 0){
+    private fun playOrContinue(path: String) {
+        if (mediaPlayer.duration > 0) {
             mediaPlayer.start()
-        }else{
+        } else {
             playMusic(path)
 
         }

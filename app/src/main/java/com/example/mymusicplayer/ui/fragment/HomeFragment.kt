@@ -14,7 +14,6 @@ import com.example.mymusicplayer.ui.HomeRecyclerViewUiState.Favourite
 import com.example.mymusicplayer.ui.HomeRecyclerViewUiState.NavigateToNextPage
 import com.example.mymusicplayer.ui.HomeUiState
 import com.example.mymusicplayer.ui.HomeUiState.*
-import com.example.mymusicplayer.ui.MusicPlayerUiState
 import com.example.mymusicplayer.ui.recyclerView.adapters.SongsRecyclerViewAdapter
 import com.example.mymusicplayer.ui.util.*
 import com.example.mymusicplayer.ui.util.Constants.SONG_DATA
@@ -22,7 +21,7 @@ import com.example.mymusicplayer.ui.viewmodel.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment: Fragment() {
+class HomeFragment : Fragment() {
 
     private val homeViewModel by activityViewModels<HomeViewModel>()
 
@@ -34,7 +33,7 @@ class HomeFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater,container,false)
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
         return fragmentHomeBinding.root
     }
 
@@ -47,44 +46,47 @@ class HomeFragment: Fragment() {
             adapter = songsRecyclerViewAdapter
         }
         homeViewModel.fetchAllLearningFieldAudio()
-          viewLifecycleOwner.observe(homeViewModel.songsObs,::observeSongState)
+        viewLifecycleOwner.observe(homeViewModel.songsObs, ::observeSongState)
     }
 
 
-    private fun recyclerAdapter(homeRecyclerViewUiState: HomeRecyclerViewUiState){
-        when(homeRecyclerViewUiState){
-            is Favourite ->{
+    private fun recyclerAdapter(homeRecyclerViewUiState: HomeRecyclerViewUiState) {
+        when (homeRecyclerViewUiState) {
+            is Favourite -> {
                 with(homeRecyclerViewUiState) {
-                    homeViewModel.updateFavourite(isFavourite,songTitle)
+                    homeViewModel.updateFavourite(isFavourite, songTitle)
                 }
             }
-            is NavigateToNextPage ->{
+            is NavigateToNextPage -> {
                 val args = Bundle()
                 args.apply {
-                    putParcelable(SONG_DATA,homeRecyclerViewUiState.song)
+                    putParcelable(SONG_DATA, homeRecyclerViewUiState.song)
                 }
-                requireActivity().navigateWithArgsTo(destId = R.id.action_homeFragment_to_music_player_Fragment, args = args)
+                requireActivity().navigateWithArgsTo(destId = R.id.action_homeFragment_to_music_player_Fragment,
+                    args = args)
             }
         }
     }
 
-    private fun observeSongState(songUiState: HomeUiState?){
+    private fun observeSongState(songUiState: HomeUiState?) {
         requireActivity().dismissProgress()
-            when(songUiState) {
-                is Success -> {
-                    songsRecyclerViewAdapter.submitList(songUiState.data)
-                }
-                is Loading ->{
-                    requireActivity().showProgress(getString(R.string.fetching_songs),getString(R.string.please_wait))
-                }
-                is Error ->{
-                    requireActivity().onErrorMessage(title = getString(R.string.error), throwable = songUiState.exception)
-                }
-                else ->{
+        when (songUiState) {
+            is Success -> {
+                songsRecyclerViewAdapter.submitList(songUiState.data)
+            }
+            is Loading -> {
+                requireActivity().showProgress(getString(R.string.fetching_songs),
+                    getString(R.string.please_wait))
+            }
+            is Error -> {
+                requireActivity().onErrorMessage(title = getString(R.string.error),
+                    throwable = songUiState.exception)
+            }
+            else -> {
 
-                }
             }
         }
+    }
 
 
 }

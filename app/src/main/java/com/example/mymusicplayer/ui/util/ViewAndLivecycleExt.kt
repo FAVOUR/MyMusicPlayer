@@ -1,11 +1,6 @@
 package com.example.mymusicplayer.ui.util
 
 import android.app.Activity
-import android.app.ProgressDialog
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleOwner
@@ -14,8 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.example.mymusicplayer.MyMusicApp
 import com.example.mymusicplayer.R
-import java.io.ByteArrayOutputStream
-import java.util.*
 
 fun <T : Any, L : LiveData<T>> LifecycleOwner.observe(liveData: L, body: (T?) -> Unit) {
     liveData.observe(this, Observer(body))
@@ -43,14 +36,12 @@ fun Activity.dismissProgress() = (this.applicationContext as MyMusicApp).dismiss
 
 fun Activity.onErrorMessage(title: String, throwable: Throwable) {
     dismissProgress()
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(throwable.localizedMessage)
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
-    }
-
-
+    AlertDialog.Builder(this)
+        .setTitle(title)
+        .setMessage(throwable.localizedMessage)
+        .setNegativeButton(android.R.string.cancel, null)
+        .show()
+}
 
 
 /*

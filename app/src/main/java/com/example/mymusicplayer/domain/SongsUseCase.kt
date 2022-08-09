@@ -1,10 +1,5 @@
 package com.example.mymusicplayer.domain
 
-import com.example.mymusicplayer.data.repository.SongRepository
-import com.example.mymusicplayer.data.source.remote.model.LearnFieldSongs
-import io.reactivex.Observable
-import javax.inject.Inject
-
 //class SongsUseCase @Inject constructor(private val songsRepository: SongRepository) {
 //
 //    fun getSongs(): Observable<Result<LearnFieldSongs>> {

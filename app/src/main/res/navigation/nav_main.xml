@@ -15,7 +15,7 @@
         android:id="@+id/homeFragment"
         android:name="com.example.mymusicplayer.ui.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_music_player_Fragment"
             app:destination="@id/musicPlayerFragment"
@@ -27,7 +27,7 @@
         app:destination="@id/homeFragment"
         app:enterAnim="@anim/nav_default_enter_anim"
         app:exitAnim="@animator/nav_default_exit_anim"
-        app:popUpTo="@id/nav_main"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        app:popExitAnim="@anim/nav_default_pop_exit_anim"
+        app:popUpTo="@id/nav_main" />
 </navigation>

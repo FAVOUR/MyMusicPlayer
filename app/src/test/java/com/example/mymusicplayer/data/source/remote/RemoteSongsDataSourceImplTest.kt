@@ -6,14 +6,12 @@ import com.example.mymusicplayer.util.TestData.errorResponse
 import com.example.mymusicplayer.util.TestData.malFormedErrorResponse
 import com.example.mymusicplayer.util.TestData.successResponse
 import com.google.common.truth.Truth.assertThat
-import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -50,7 +48,7 @@ internal class RemoteSongsDataSourceImplTest {
 
         mockWebServer.enqueue(response)
 
-        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient,retrofitClient)
+        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient, retrofitClient)
 
         // Act
         val result = remoteSongsDataSource.getSongs()
@@ -70,7 +68,7 @@ internal class RemoteSongsDataSourceImplTest {
 
         mockWebServer.enqueue(response)
 
-        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient,retrofitClient)
+        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient, retrofitClient)
 
         // Act
         val result = remoteSongsDataSource.getSongs()
@@ -81,44 +79,44 @@ internal class RemoteSongsDataSourceImplTest {
         assertThat(result.songs).hasSize(3)
     }
 
-      @Test
-      fun `malformed response returns an empty array`(){
-          // Arrange
-          val response = MockResponse()
-              .setBody(malFormedErrorResponse)
-              .setResponseCode(200)
+    @Test
+    fun `malformed response returns an empty array`() {
+        // Arrange
+        val response = MockResponse()
+            .setBody(malFormedErrorResponse)
+            .setResponseCode(200)
 
-          mockWebServer.enqueue(response)
+        mockWebServer.enqueue(response)
 
-          val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient,retrofitClient)
+        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient, retrofitClient)
 
-          // Act
-          val result = remoteSongsDataSource.getSongs()
-              .blockingGet()
+        // Act
+        val result = remoteSongsDataSource.getSongs()
+            .blockingGet()
 
-          // Assert
-          assertThat(result).isEqualTo(LearnFieldSongs(songs = null))
-      }
+        // Assert
+        assertThat(result).isEqualTo(LearnFieldSongs(songs = null))
+    }
 
-      @Test
-      fun `error response returns is not null and returns a single array with an incomplete data`(){
-          // Arrange
-          val response = MockResponse()
-              .setBody(errorResponse)
-              .setResponseCode(400)
+    @Test
+    fun `error response returns is not null and returns a single array with an incomplete data`() {
+        // Arrange
+        val response = MockResponse()
+            .setBody(errorResponse)
+            .setResponseCode(400)
 
-          mockWebServer.enqueue(response)
+        mockWebServer.enqueue(response)
 
-          val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient,retrofitClient)
+        val remoteSongsDataSource = RemoteSongsDataSourceImpl(learnifiedApiClient, retrofitClient)
 
-          // Act
-          val result = remoteSongsDataSource.getSongs()
-              .blockingGet()
+        // Act
+        val result = remoteSongsDataSource.getSongs()
+            .blockingGet()
 
-          // Assert
-          assertThat(result).isNotNull()
-          assertThat(result.songs).hasSize(1)
-      }
+        // Assert
+        assertThat(result).isNotNull()
+        assertThat(result.songs).hasSize(1)
+    }
 
 
     @After

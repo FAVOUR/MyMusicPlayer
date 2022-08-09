@@ -7,7 +7,6 @@ import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.InputStream
 import javax.inject.Inject
 
 
@@ -28,14 +27,14 @@ class RemoteSongsDataSourceImpl @Inject constructor(
 
 inline fun <reified T> Single<Response<T>>.extractData(retrofitClient: Retrofit): Single<T> {
     return this.map {
-            if (it.isSuccessful) {
-                it.body()
-            } else {
-                val converter =
-                    retrofitClient.responseBodyConverter<T>(T::class.java, arrayOfNulls(0))
-                converter.convert(it.errorBody()) //Breaks the ci build
-            }
+        if (it.isSuccessful) {
+            it.body()
+        } else {
+            val converter =
+                retrofitClient.responseBodyConverter<T>(T::class.java, arrayOfNulls(0))
+            converter.convert(it.errorBody()) //Breaks the ci build
         }
+    }
 
 }
 

@@ -16,4 +16,4 @@ data class Song(
     val totalDurationMs: Long,
     val isFavourite: Boolean,
     val rating: Int,
-):Parcelable
+) : Parcelable

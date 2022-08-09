@@ -6,18 +6,17 @@ import android.app.ProgressDialog
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class MyMusicApp:Application(){
+class MyMusicApp : Application() {
 
     private var progressDialog: ProgressDialog? = null
 
     fun showProgress(context: Activity, title: String?, message: String) {
-//        progressDialog?.dismiss()
         progressDialog = ProgressDialog.show(context, title, message)
     }
 
     fun dismissProgress() {
-            progressDialog?.dismiss()
-            progressDialog = null
+        progressDialog?.dismiss()
+        progressDialog = null
     }
 
 }
